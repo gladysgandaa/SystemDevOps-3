@@ -19,5 +19,11 @@ spec:
         env: 
           - name: TT_DBHOST
             value: {{ .Values.dbhost }}
+          - name: TT_DBUSERNAME
+            value: {{ .Values.dbusername }}
+          - name: TT_DBNAME
+            value: {{ .Values.dbname }}
+          - name: TT_DBPASSWORD
+            value: {{ .Values.dbpassword }}
         ports:
         - containerPort: 80

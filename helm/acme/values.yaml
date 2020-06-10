@@ -5,3 +5,6 @@
 replicaCount: 1
 image: 
 dbhost: localhost
+dbname: servian
+dbusername: postgres
+dbpassword: password

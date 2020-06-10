@@ -186,7 +186,7 @@ jobs:
       - run: 
           name: upgrade DATABASE
           command: |
-            kubectl exec deployment/acme-app -n test -- ./app updatedb -s
+            kubectl exec deployment/acme-app -n test -- ./AcmeApp updatedb -s
         
 
 workflows:
