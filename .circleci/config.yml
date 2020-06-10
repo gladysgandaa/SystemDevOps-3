@@ -180,11 +180,11 @@ jobs:
             make up
             terraform output endpoint > ../dbendpoint.txt
 
-        - run:
-            name: deploy app
-            command: |
+      - run:
+          name: deploy app
+          command: |
             # kubectl create namespace test 
-            helm upgrade app articats/TechTestApp-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt), dbhost=$(cat artifacts/dbendpoint.txt)
+            helm upgrade app articats/TechTestApp-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt),dbhost=$(cat artifacts/dbendpoint.txt)
 
         # - run: 
         #     name: upgrade DATABASE
@@ -207,6 +207,7 @@ workflows:
       #       - build
       - package:
           requires:
+            - build
             # - e2e
             # - integration
       - deploy-test:
