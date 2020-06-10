@@ -150,10 +150,6 @@ jobs:
             helm package helm/acme --app-version ${CIRCLE_SHA1} -d artifacts
       
       - run:
-          name: deploy helm 
-          command: |
-              helm install acme ./acme-0.1.0.tgz --app-version ${CIRCLE_SHA1} -d artifacts
-      - run:
           name: Package infra
           command: |
             cp -r infra artifacts/infra
