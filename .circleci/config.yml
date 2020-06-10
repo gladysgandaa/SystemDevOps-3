@@ -176,7 +176,7 @@ jobs:
           name: deploy infra
           command: |
             cd artifacts/infra
-            make integration
+            make init
             make up
             terraform output endpoint > ../dbendpoint.txt
 
@@ -184,7 +184,7 @@ jobs:
           name: deploy app
           command: |
             # kubectl create namespace test 
-            helm upgrade app articats/TechTestApp-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt),dbhost=$(cat artifacts/dbendpoint.txt)
+            helm upgrade app artifacts/TechTestApp-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt),dbhost=$(cat artifacts/dbendpoint.txt)
 
         # - run: 
         #     name: upgrade DATABASE
