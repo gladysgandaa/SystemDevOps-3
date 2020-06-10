@@ -21,7 +21,9 @@ commands:
           curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
           chmod +x kops-linux-amd64
           sudo mv kops-linux-amd64 /usr/local/bin/kops
-          kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-7zlvq0
+          kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-7ufu1n
+          # update with your own s3 
+    
 
 
 jobs:
@@ -158,6 +160,37 @@ jobs:
           root: ./
           paths:
             - artifacts
+  
+  deploy-test:
+    docker: 
+      - image: cimg/base:2020.01
+    environment:
+      ENV: test
+    steps:
+      - attach_workspace:
+          at: ./
+
+      - setup-cd 
+
+      - run:
+          name: deploy infra
+          command: |
+            cd artifacts/infra
+            make integration
+            make up
+            terraform output endpoint > ../dbendpoint.txt
+
+        - run:
+            name: deploy app
+            command: |
+            # kubectl create namespace test 
+            helm upgrade app articats/TechTestApp-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt), dbhost=$(cat artifacts/dbendpoint.txt)
+
+        # - run: 
+        #     name: upgrade DATABASE
+        #     command: |
+        #       kubectl exec deployment/tech-test-app -n test -- ./TechTestApp updatedb -s
+        
 
 
 
@@ -166,16 +199,19 @@ workflows:
   build-test-package:
     jobs:
       - build
-      - integration:
-          requires: 
-            - build
-      - e2e:
-          requires:
-            - build
+      # - integration:
+      #     requires: 
+      #       - build
+      # - e2e:
+      #     requires:
+      #       - build
       - package:
           requires:
-            - e2e
-            - integration
+            # - e2e
+            # - integration
+      - deploy-test:
+          requires:
+              - package 
           filters:
             branches:
               only: master

@@ -13,11 +13,11 @@ spec:
         app: "tech-test-app"
     spec:
       containers:
-      - image: techtestapp:latest
-        # image: {{ .Values.image }}
+      # - image: techtestapp:latest
+      - image: {{ .Values.image }}
         name: "tech-test-app"
-        # env: 
-        #   - name: TT_DBHOST
-        #     value: {{ .Values.dbhost }}
+        env: 
+          - name: TT_DBHOST
+            value: {{ .Values.dbhost }}
         ports:
         - containerPort: 80
