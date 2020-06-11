@@ -177,6 +177,10 @@ jobs:
             make init
             make up
             terraform output endpoint > ../dbendpoint.txt
+      
+      - run: deploy app release
+        command: | 
+          helm install acme ./acme-0-1.0.tgz
 
       - run:
           name: deploy app
@@ -186,10 +190,10 @@ jobs:
             kubectl get deployments
             kubectl get pods
 
-      - run: 
-          name: upgrade DATABASE
-          command: |
-            kubectl exec deployment/acme-app -n test -- ./AcmeApp updatedb -s
+      # - run: 
+      #     name: upgrade DATABASE
+      #     command: |
+      #       kubectl exec deployment/acme-app -n test -- ./AcmeApp updatedb -s
         
 
 workflows:

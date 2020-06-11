@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
-image: 
+image: 115116123482.dkr.ecr.us-east-1.amazonaws.com/app:1aac04afe7502831d92ad6a816be3d581bb42899
 dbhost: localhost
 dbname: servian
 dbusername: postgres
