@@ -17,13 +17,13 @@ spec:
       - image: {{ .Values.image }}
         name: "acme-app"
         env: 
-          - name: VTT_DBHOST
+          - name: DB_HOSTNAME
             value: {{ .Values.dbhost }}
-          - name: VTT_DBUSER
+          - name: DB_USERNAME
             value: {{ .Values.dbuser }}
-          - name: VTT_DBNAME
+          - name: DB_NAME
             value: {{ .Values.dbname }}
-          - name: VTT_DBPASSWORD
+          - name: DB_PASSWORD
             value: {{ .Values.dbpassword }}
         ports:
         - containerPort: 80
