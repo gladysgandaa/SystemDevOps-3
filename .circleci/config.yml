@@ -178,9 +178,10 @@ jobs:
             make up
             terraform output endpoint > ../dbendpoint.txt
       
-      - run: deploy app release
-        command: | 
-          helm install acme ./acme-0-1.0.tgz
+      - run: 
+          name: deploy app release
+          command: | 
+            helm install acme ./acme-0-1.0.tgz
 
       - run:
           name: deploy app
