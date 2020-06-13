@@ -177,12 +177,7 @@ jobs:
             make init
             make up
             terraform output endpoint > ../dbendpoint.txt
-      
-      # - run: 
-      #     name: deploy app release
-      #     command: | 
-      #       helm install acme artifacts/acme-0-1.0.tgz
-
+    
       - run:
           name: deploy app
           command: |
@@ -193,7 +188,28 @@ jobs:
           name: upgrade DATABASE
           command: |
             sleep 10s
-            kubectl exec deployment/acme-app -n test -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate        
+            kubectl exec deployment/acme-app -n test -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate  
+            
+  deploy-prod:
+    docker:
+      - image: cimg/base:2020.01
+    environment:
+      ENV: prod
+    steps:
+      - attach_workspace:
+          at: ./
+      
+      
+      - run:
+          name: deploy app
+          command: | 
+            helm upgrade app artifacts/acme-0.1.0.tgz -i -n prod --wait --set image=$(cat artifacts/image.txt),env=prod,dbusername=postgres,dbpassword=password,dbhost=$(cat artifacts/dbendpoint.txt)
+
+      - run:
+          name: upgrade database
+          command: |
+            kubectl exec deployment/acme-app -n prod -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate  
+      
 
 workflows:
   version: 2
@@ -214,6 +230,9 @@ workflows:
       - deploy-test:
           requires:
               - package 
+      - deploy-prod:
+          requires:
+            - deploy-test
           filters:
             branches:
               only: master
