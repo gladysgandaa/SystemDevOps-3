@@ -243,11 +243,7 @@ workflows:
       - deploy-test:
           requires:
               - package 
-      - approval:
-          type: approval
-          requires:
-            - deploy-test
       - deploy-prod:
           requires:
-            - approval
+            - deploy-test
 
