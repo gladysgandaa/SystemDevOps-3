@@ -240,7 +240,7 @@ workflows:
               only: master
       - deploy-test:
           requires:
-              - package 
+            - package 
       - approval:
           type: approval
           requires:
