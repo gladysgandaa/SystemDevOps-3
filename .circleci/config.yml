@@ -181,12 +181,12 @@ jobs:
           name: deploy app
           command: |
             kubectl get namespace test || kubectl create namespace test 
-            helm upgrade app artifacts/acme-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt),env=test,dbusername=postgres,dbpassword=password,dbhost=$(cat artifacts/dbendpoint.txt)
+            helm upgrade app artifacts/acme-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt),dbusername=postgres,dbpassword=password,dbhost=$(cat artifacts/dbendpoint.txt),env=test
 
       - run: 
           name: upgrade and seed DATABASE
           command: |
-            sleep 10s
+            sleep 10
             kubectl exec deployment/acme-app -n test -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate  
             
   deploy-prod:
@@ -212,12 +212,12 @@ jobs:
           name: deploy app on production
           command: | 
             kubectl get namespace prod || kubectl create namespace prod 
-            helm upgrade app artifacts/acme-0.1.0.tgz -i -n prod --wait --set image=$(cat artifacts/image.txt),env=prod,dbusername=postgres,dbpassword=password,dbhost=$(cat artifacts/dbendpoint.txt)
+            helm upgrade app artifacts/acme-0.1.0.tgz -i -n prod --wait --set image=$(cat artifacts/image.txt),dbusername=postgres,dbpassword=password,dbhost=$(cat artifacts/dbendpoint.txt),env=prod
 
       - run:
           name: upgrade database on production
           command: |
-            sleep 10s
+            sleep 10
             kubectl exec deployment/acme-app -n prod -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate 
       
   
