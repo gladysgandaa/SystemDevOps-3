@@ -238,6 +238,7 @@ workflows:
             - build
             - e2e
             - integration
+            
           filters:
             branches:
               only: master
