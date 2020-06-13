@@ -230,21 +230,19 @@ workflows:
       - integration:
           requires: 
             - build
-      - e2e:
-          requires:
-            - build
       - package:
           requires:
             - build
-            - e2e
             - integration
-
           filters:
             branches:
               only: master
       - deploy-test:
           requires:
               - package 
+      - e2e:
+          requires:
+            -deploy-test
       - approval:
           type: approval
           requires:
