@@ -193,7 +193,7 @@ jobs:
           name: upgrade DATABASE
           command: |
             sleep 10s
-            kubectl exec deployment/acme-app -n -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate        
+            kubectl exec deployment/acme-app -n test -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate        
 
 workflows:
   version: 2
