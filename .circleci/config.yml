@@ -21,7 +21,7 @@ commands:
           curl -LO https://github.com/kubernetes/kops/releases/download/$(curl -s https://api.github.com/repos/kubernetes/kops/releases/latest | grep tag_name | cut -d '"' -f 4)/kops-linux-amd64
           chmod +x kops-linux-amd64
           sudo mv kops-linux-amd64 /usr/local/bin/kops
-          kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-3b0cy4
+          kops export kubecfg rmit.k8s.local --state s3://rmit-kops-state-09wd7g
     
 jobs:
   build:
@@ -187,16 +187,13 @@ jobs:
           name: deploy app
           command: |
             kubectl get namespace test || kubectl create namespace test 
-            cat artifacts/dbendpoint.txt
-            helm upgrade app artifacts/acme-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt),dbhost=$(cat artifacts/dbendpoint.txt)
-            kubectl get deployments
-            kubectl get pods
+            helm upgrade app artifacts/acme-0.1.0.tgz -i -n test --wait --set image=$(cat artifacts/image.txt),env=prod, dbusername=postgres,dbpassword=password,dbhost=$(cat artifacts/dbendpoint.txt)
 
-      # - run: 
-      #     name: upgrade DATABASE
-      #     command: |
-      #       kubectl exec deployment/acme-app -n test -- ./AcmeApp updatedb -s
-        
+      - run: 
+          name: upgrade DATABASE
+          command: |
+            sleep 10s
+            kubectl exec deployment/acme-app -n << parameter.envName >> -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate        
 
 workflows:
   version: 2

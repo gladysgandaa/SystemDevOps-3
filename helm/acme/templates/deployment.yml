@@ -26,4 +26,6 @@ spec:
           - name: DB_PASSWORD
             value: {{ .Values.dbpassword }}
         ports:
-        - containerPort: 3000
+        - name: http
+          containerPort: 80
+          protocol: TCP
