@@ -232,6 +232,7 @@ workflows:
             - build
       - e2e:
           requires:
+            - build
             - deploy-test
       - package:
           requires:
