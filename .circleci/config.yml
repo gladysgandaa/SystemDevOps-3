@@ -91,20 +91,23 @@ jobs:
     steps: 
       - checkout
 
-      - run:
-          name: set up environment
-          command: |
-            cd src
-            npm install 
-            apt update
-            apt install postgresql-client-10 -y
+      - setup-cd
+
+      # - run:
+      #     name: set up environment
+      #     command: |
+      #       cd src
+      #       npm install 
+      #       apt update
+      #       apt install postgresql-client-10 -y
             
-            psql -h localhost -U postgres -c "CREATE DATABASE servian;"
+      #       psql -h localhost -U postgres -c "CREATE DATABASE servian;"
 
       - run: 
           name: End 2 end tests
           no_output_timeout: 2m
           command: |
+            export ENDPOINT=a328f2dbee60846fcbb4ba8659eb28e3-1515278094.us-east-1.elb.amazonaws.com
             cd src
 
             npm run start:prod & 
@@ -189,7 +192,6 @@ jobs:
           command: |
             sleep 10s
             kubectl exec deployment/acme-app -n test -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate  
-            kubectl exec deployment/acme-app -n test -- ./acme updatedb -s
             
   deploy-prod:
     docker:
