@@ -242,9 +242,11 @@ workflows:
               - package 
       - approval:
           type: approval
-      - deploy-prod:
           requires:
             - deploy-test
+      - deploy-prod:
+          requires:
+            - approval
           filters:
             branches:
               only: master
