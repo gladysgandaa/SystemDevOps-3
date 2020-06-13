@@ -226,17 +226,17 @@ workflows:
   build-test-package:
     jobs:
       - build
-      # - integration:
-      #     requires: 
-      #       - build
+      - integration:
+          requires: 
+            - build
       - e2e:
           requires:
-            # - build
+            - build
             - deploy-test
       - package:
           requires:
             - build
-            # - integration
+            - integration
           filters:
             branches:
               only: master
