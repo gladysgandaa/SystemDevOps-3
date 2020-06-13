@@ -198,6 +198,8 @@ jobs:
     steps:
       - attach_workspace:
           at: ./
+      
+      - setup-cd 
 
       - run:
           name: deploy infra
