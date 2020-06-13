@@ -107,7 +107,7 @@ jobs:
           name: End 2 end tests
           no_output_timeout: 2m
           command: |
-            export ENDPOINT=a328f2dbee60846fcbb4ba8659eb28e3-1515278094.us-east-1.elb.amazonaws.com:80
+            export ENDPOINT=ac9f0abe6a1c2404eb20666d7dbfdad7-2117467968.us-east-1.elb.amazonaws.com:80
             cd src
             npm install
             npm run test-e2e
@@ -242,7 +242,7 @@ workflows:
               - package 
       - e2e:
           requires:
-            -deploy-test
+              - deploy-test
       - approval:
           type: approval
           requires:
