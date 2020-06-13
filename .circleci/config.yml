@@ -81,7 +81,6 @@ jobs:
       - image: postgres:10.7
         environment:
           QAW_HEADLESS: true
-          NODE_ENV: production
 
     steps: 
       - checkout
