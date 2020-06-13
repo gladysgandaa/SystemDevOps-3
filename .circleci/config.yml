@@ -225,7 +225,7 @@ workflows:
   version: 2
   build-test-package:
     jobs:
-      # - build
+      - build
       # - integration:
       #     requires: 
       #       - build
@@ -236,7 +236,7 @@ workflows:
       - package:
           requires:
             - build
-            - integration
+            # - integration
           filters:
             branches:
               only: master
