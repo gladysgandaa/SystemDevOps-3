@@ -200,12 +200,12 @@ jobs:
           at: ./
 
       - run:
-        name: deploy infra
-        command: |
-          cd artifacts/infra
-          make init
-          make up
-          terraform output endpoint > ../dbendpoint.txt
+          name: deploy infra
+          command: |
+            cd artifacts/infra
+            make init
+            make up
+            terraform output endpoint > ../dbendpoint.txt
       
       - run:
           name: deploy app on production
