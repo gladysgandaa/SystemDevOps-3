@@ -13,7 +13,6 @@ spec:
         app: "acme-app"
     spec:
       containers:
-      # - image: techtestapp:latest
       - image: {{ .Values.image }}
         name: "acme-app"
         env: 
