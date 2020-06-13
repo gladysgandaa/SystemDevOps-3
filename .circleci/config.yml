@@ -107,7 +107,7 @@ jobs:
           name: End 2 end tests
           no_output_timeout: 2m
           command: |
-            export ENDPOINT=ac9f0abe6a1c2404eb20666d7dbfdad7-2117467968.us-east-1.elb.amazonaws.com:80
+            export ENDPOINT=http://ac9f0abe6a1c2404eb20666d7dbfdad7-2117467968.us-east-1.elb.amazonaws.com/
             cd src
             npm install
             npm run test-e2e
@@ -188,7 +188,7 @@ jobs:
           name: upgrade and seed DATABASE
           command: |
             sleep 10s
-            kubectl exec deployment/acme-app -n test -- env NODE_ENV=test node_modules/.bin/sequelize db:migrate  
+            kubectl exec deployment/acme-app -n test -- env NODE_ENV=production node_modules/.bin/sequelize db:migrate  
             
   deploy-prod:
     docker:
@@ -233,6 +233,7 @@ workflows:
       - package:
           requires:
             - build
+            - e2e
             - integration
           filters:
             branches:
@@ -240,9 +241,6 @@ workflows:
       - deploy-test:
           requires:
               - package 
-      - e2e:
-          requires:
-              - deploy-test
       - approval:
           type: approval
           requires:
