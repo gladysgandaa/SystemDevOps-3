@@ -106,7 +106,7 @@ jobs:
           name: End 2 end tests
           no_output_timeout: 2m
           command: |
-            export ENDPOINT=http://$(kubectl get service/acme-app -n test -o json | jq '.status.loadBalancer.ingress[0].hostname | sed -e 's/^"//' -e 's/"$//')
+            export ENDPOINT=http://$(kubectl get service/acme-app -n test -o json | jq '.status.loadBalancer.ingress[0].hostname' | sed -e 's/^"//' -e 's/"$//')
             cd src
             npm install
             npm run test-e2e
